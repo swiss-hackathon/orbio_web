@@ -146,6 +146,15 @@ def main():
 
     data_dir = pathlib.Path(args.data).resolve()
     out_dir = pathlib.Path(args.out).resolve()
+    
+    # Without the interactive experiment there is no data to publish: copy the site and stop.
+    if not (ROOT / "site" / "experiment").exists():
+        if out_dir.exists():
+            shutil.rmtree(out_dir)
+        shutil.copytree(ROOT / "site", out_dir)
+        (out_dir / ".nojekyll").touch()
+        print(f"built {out_dir.name} · no experiment page, no data published")
+        return
     meta_path = data_dir / "run_metadata.json"
     if not meta_path.exists():
         fail("run_metadata.json not found in the dataset folder. Set the repository variables "
