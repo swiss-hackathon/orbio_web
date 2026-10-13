@@ -1,0 +1,133 @@
+{
+  "profile": {
+    "grid_n": 90,
+    "grid_h": 20.0,
+    "max_agents": 90000
+  },
+  "physics": {
+    "d_o2": 7200000.0,
+    "d_glc": 2000000.0,
+    "o2Hypoxic": 0.25,
+    "o2ProliferationSaturation": 0.6,
+    "o2Necrotic": 0.08,
+    "glucoseMinimum": 0.15
+  },
+  "initialization": {
+    "datasetMinimumAgents": 100,
+    "datasetMaximumAgents": 160
+  },
+  "faceValidity": {
+    "byTissueAndGravity": {
+      "generic": {
+        "ground_1g": {
+          "n": 6,
+          "median_log_fold": 2.4892590061984396
+        },
+        "flight_1g_ctrl": {
+          "n": 3,
+          "median_log_fold": 2.062660545086315
+        },
+        "flight_ug": {
+          "n": 5,
+          "median_log_fold": 2.2421879841330323
+        },
+        "sim_ug_rpm": {
+          "n": 2,
+          "median_log_fold": 2.840484751702496
+        },
+        "sim_ug_clinostat": {
+          "n": 1,
+          "median_log_fold": 2.243744536396447
+        }
+      },
+      "neural": {
+        "ground_1g": {
+          "n": 3,
+          "median_log_fold": 2.2710319103443566
+        },
+        "flight_1g_ctrl": {
+          "n": 1,
+          "median_log_fold": 1.9412911458864732
+        },
+        "flight_ug": {
+          "n": 4,
+          "median_log_fold": 2.2195356580525063
+        },
+        "sim_ug_rpm": {
+          "n": 3,
+          "median_log_fold": 2.698170489113342
+        },
+        "sim_ug_clinostat": {
+          "n": 4,
+          "median_log_fold": 2.686818581394352
+        }
+      },
+      "cardiac": {
+        "ground_1g": {
+          "n": 0,
+          "median_log_fold": null
+        },
+        "flight_1g_ctrl": {
+          "n": 3,
+          "median_log_fold": 2.111300359671858
+        },
+        "flight_ug": {
+          "n": 0,
+          "median_log_fold": null
+        },
+        "sim_ug_rpm": {
+          "n": 0,
+          "median_log_fold": null
+        },
+        "sim_ug_clinostat": {
+          "n": 0,
+          "median_log_fold": null
+        }
+      },
+      "crc_tumor_organoid": {
+        "ground_1g": {
+          "n": 1,
+          "median_log_fold": 2.3037927843216166
+        },
+        "flight_1g_ctrl": {
+          "n": 5,
+          "median_log_fold": 2.3098620407317063
+        },
+        "flight_ug": {
+          "n": 3,
+          "median_log_fold": 2.1155211350804675
+        },
+        "sim_ug_rpm": {
+          "n": 2,
+          "median_log_fold": 3.1413780547239663
+        },
+        "sim_ug_clinostat": {
+          "n": 1,
+          "median_log_fold": 2.77148384582273
+        }
+      },
+      "cancer_cellline_spheroid": {
+        "ground_1g": {
+          "n": 6,
+          "median_log_fold": 2.3892015718504287
+        },
+        "flight_1g_ctrl": {
+          "n": 2,
+          "median_log_fold": 2.5158291962027377
+        },
+        "flight_ug": {
+          "n": 5,
+          "median_log_fold": 2.322671875261673
+        },
+        "sim_ug_rpm": {
+          "n": 3,
+          "median_log_fold": 2.9422934494433552
+        },
+        "sim_ug_clinostat": {
+          "n": 3,
+          "median_log_fold": 2.494183630332319
+        }
+      }
+    }
+  }
+}
