@@ -1,0 +1,78 @@
+name: Build and deploy site
+
+# Rebuilds the site whenever the site code or the dataset changes, and publishes it to GitHub Pages.
+#
+# Where the dataset comes from:
+#   - By default: the data/ folder in this repo.
+#   - If the repository variable DATA_REPO is set (e.g. "your-org/swiss-main"), that repo is
+#     checked out instead and DATA_PATH (default "data") inside it is used. For a private data
+#     repo, add a secret DATA_REPO_TOKEN with read access to it.
+#   - The data repo can trigger a rebuild with a repository_dispatch event of type "dataset-updated"
+#     (see README).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dataset_ref:
+        description: "Branch, tag or commit of the dataset repo to build from (blank = default branch)"
+        required: false
+  repository_dispatch:
+    types: [dataset-updated]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out external dataset
+        if: ${{ vars.DATA_REPO != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.DATA_REPO }}
+          ref: ${{ github.event.inputs.dataset_ref || github.event.client_payload.ref || '' }}
+          token: ${{ secrets.DATA_REPO_TOKEN || github.token }}
+          path: _dataset
+
+      - name: Choose dataset folder
+        id: dataset
+        run: |
+          if [ -n "${{ vars.DATA_REPO }}" ]; then
+            echo "dir=_dataset/${{ vars.DATA_PATH || 'data' }}" >> "$GITHUB_OUTPUT"
+            echo "ref=$(git -C _dataset rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          else
+            echo "dir=data" >> "$GITHUB_OUTPUT"
+            echo "ref=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build site
+        run: python scripts/build_site.py --data "${{ steps.dataset.outputs.dir }}" --out _site --dataset-ref "${{ steps.dataset.outputs.ref }}"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
